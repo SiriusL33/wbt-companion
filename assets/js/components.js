@@ -1,13 +1,13 @@
 /*
  * WBT Companion - UI Components
- * Features: Header/Footer Injection, Mobile Menu, User Onboarding (Safe Input)
+ * Fix: Neutrale Rolle & Name Update
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     injectHeader();
     injectFooter();
-    setupMobileMenu(); // Burger Menü Logik
-    initUserSystem();  // Namens-Abfrage Logik
+    setupMobileMenu(); 
+    initUserSystem();  
 });
 
 function getBasePath() {
@@ -52,15 +52,13 @@ function injectHeader() {
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-100 rounded-lg md:flex-row md:items-center md:space-x-8 md:mt-0 md:border-0">
                     <li><a href="${basePath}index.html" class="block py-2 px-3 rounded md:p-0 ${isHome ? activeClass : inactiveClass}">Startseite</a></li>
                     <li><a href="${basePath}pages/explore.html" class="block py-2 px-3 rounded md:p-0 ${isExplore ? activeClass : inactiveClass}">Explore</a></li>
-                    <li><a href="${basePath}pages/topics.html" class="block py-2 px-3 rounded md:p-0 ${isTopics ? activeClass : inactiveClass}">Themen</a></li>
-                    <li><a href="${basePath}pages/about.html" class="block py-2 px-3 rounded md:p-0 ${isAbout ? activeClass : inactiveClass}">About</a></li>
                     
                     <li class="hidden md:block h-6 w-px bg-slate-200 mx-2"></li>
                     
                     <li class="hidden md:flex items-center gap-3 pl-2 cursor-pointer group/profile" onclick="resetUser()" title="Namen ändern">
                         <div class="text-right hidden lg:block">
-                            <div id="user-name-display" class="text-sm font-bold text-slate-700">Gast</div>
-                            <div class="text-[10px] text-slate-400">Student (Sem. 4)</div>
+                            <div id="user-name-display" class="text-sm font-bold text-slate-700">Besucher</div>
+                            <div class="text-[10px] text-slate-400">Medical Explorer</div>
                         </div>
                         <img id="user-avatar-display" src="https://ui-avatars.com/api/?name=Guest&background=e2e8f0&color=64748b" class="w-10 h-10 rounded-full border-2 border-white shadow-sm group-hover/profile:scale-105 transition-transform" alt="Profil">
                     </li>
@@ -97,29 +95,26 @@ function injectFooter() {
 
 // --- LOGIK: MOBILE MENU ---
 function setupMobileMenu() {
-    // Wir warten kurz, bis das HTML sicher injected ist
     setTimeout(() => {
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('navbar-default');
-
         if(btn && menu) {
-            btn.onclick = () => {
-                menu.classList.toggle('hidden');
-            };
+            btn.onclick = () => { menu.classList.toggle('hidden'); };
         }
     }, 100);
 }
 
-// --- LOGIK: USER ONBOARDING (SECURE) ---
+// --- LOGIK: USER ONBOARDING ---
 function initUserSystem() {
     const storedName = localStorage.getItem('wbt_username');
 
     if (storedName) {
-        // Name existiert -> UI Updaten
         updateUserUI(storedName);
     } else {
-        // Kein Name -> Modal anzeigen
-        showWelcomeModal();
+        // Nur auf der Startseite nach dem Namen fragen, um nicht zu nerven
+        if(window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+            showWelcomeModal();
+        }
     }
 }
 
@@ -127,31 +122,24 @@ function updateUserUI(name) {
     const nameEl = document.getElementById('user-name-display');
     const avatarEl = document.getElementById('user-avatar-display');
     
-    // SICHERHEIT: textContent verhindert Code-Injection!
     if(nameEl) nameEl.textContent = name;
     
-    // Avatar URL bauen (Safe, da URL encoded)
     if(avatarEl) {
         const safeName = encodeURIComponent(name);
         avatarEl.src = `https://ui-avatars.com/api/?name=${safeName}&background=3b82f6&color=fff&bold=true`;
     }
-
-    // Auf der Startseite auch die Begrüßung anpassen (falls vorhanden)
-    // Suche nach "Guten Morgen, ..." Texten
-    const welcomeHeader = document.querySelector('h1'); 
-    if(welcomeHeader && welcomeHeader.innerText.includes('Guten Morgen')) {
-        // Optional: Falls du auf der Startseite eine persönliche Begrüßung hast
-    }
 }
 
 function showWelcomeModal() {
-    // Modal HTML dynamisch erzeugen
+    // Check ob Modal schon da ist
+    if(document.getElementById('welcome-modal')) return;
+
     const modalHTML = `
     <div id="welcome-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 transform scale-90 transition-transform duration-300">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">👋</div>
-                <h2 class="text-2xl font-bold text-slate-800">Willkommen im Explorer!</h2>
+                <h2 class="text-2xl font-bold text-slate-800">Willkommen!</h2>
                 <p class="text-slate-500 mt-2">Wie dürfen wir dich ansprechen?</p>
             </div>
             
@@ -166,18 +154,14 @@ function showWelcomeModal() {
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Einblenden Animation
     setTimeout(() => {
         const modal = document.getElementById('welcome-modal');
         const content = modal.querySelector('div');
         modal.classList.remove('opacity-0');
         content.classList.remove('scale-90');
         content.classList.add('scale-100');
-        
-        // Fokus ins Feld
         document.getElementById('input-name').focus();
         
-        // Enter Taste Support
         document.getElementById('input-name').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') saveUser();
         });
@@ -187,23 +171,17 @@ function showWelcomeModal() {
 function saveUser() {
     const input = document.getElementById('input-name');
     let name = input.value.trim();
+    if (!name) name = "Besucher";
 
-    // Fallback falls leer
-    if (!name) name = "Gast";
-
-    // Speichern (Browser merkt sich das)
     localStorage.setItem('wbt_username', name);
 
-    // Modal schließen
     const modal = document.getElementById('welcome-modal');
     modal.classList.add('opacity-0');
     setTimeout(() => modal.remove(), 300);
 
-    // UI sofort updaten
     updateUserUI(name);
 }
 
-// Funktion zum Zurücksetzen (Debugging oder Klick auf Profil)
 function resetUser() {
     if(confirm("Namen zurücksetzen?")) {
         localStorage.removeItem('wbt_username');

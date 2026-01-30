@@ -40,7 +40,7 @@ const WBTApp = {
         // PREMIUM DESIGN
         return `
             <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-slate-100 flex flex-col h-full cursor-pointer"
-                 style="background: linear-gradient(135deg, #ffffff 60%, ${color}08 100%); border-bottom: 3px solid ${color}20;"
+                 style="background: linear-gradient(135deg, var(--card-base, #ffffff) 60%, ${color}08 100%); border-bottom: 3px solid ${color}20;"
                  onclick="window.location.href='${detailLink}'">
                 
                 <div class="relative h-48 overflow-hidden bg-slate-50 m-2 rounded-2xl">

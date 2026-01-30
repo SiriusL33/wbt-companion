@@ -20,6 +20,7 @@
     
     /* Animation Timing */
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --card-base: #ffffff;
 }
 
 body {
@@ -27,6 +28,100 @@ body {
     color: var(--ctp-text);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+html[data-theme="dark"] {
+    /* Catppuccin Mocha */
+    --ctp-base: #1e1e2e;
+    --ctp-mantle: #181825;
+    --ctp-surface0: #313244;
+    --ctp-text: #cdd6f4;
+    --ctp-subtext0: #a6adc8;
+    --ctp-blue: #89b4fa;
+    --ctp-pink: #f5c2e7;
+    --ctp-mauve: #cba6f7;
+    --ctp-red: #f38ba8;
+    --ctp-green: #a6e3a1;
+    --ctp-yellow: #f9e2af;
+    --card-base: #23263a;
+}
+
+html[data-theme="dark"] body {
+    background-color: var(--ctp-base);
+    color: var(--ctp-text);
+}
+
+html[data-theme="dark"] ::selection {
+    background: rgba(137, 180, 250, 0.35);
+    color: #0b0b12;
+}
+
+html[data-theme="dark"] .bg-white {
+    background-color: var(--ctp-mantle) !important;
+}
+
+html[data-theme="dark"] .bg-white\/90 {
+    background-color: rgba(24, 24, 37, 0.9) !important;
+}
+
+html[data-theme="dark"] .bg-white\/50 {
+    background-color: rgba(24, 24, 37, 0.6) !important;
+}
+
+html[data-theme="dark"] .bg-slate-50 {
+    background-color: var(--ctp-base) !important;
+}
+
+html[data-theme="dark"] .bg-slate-100 {
+    background-color: var(--ctp-mantle) !important;
+}
+
+html[data-theme="dark"] .bg-slate-200 {
+    background-color: var(--ctp-surface0) !important;
+}
+
+html[data-theme="dark"] .bg-slate-900 {
+    background-color: #11111b !important;
+}
+
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-800 {
+    color: var(--ctp-text) !important;
+}
+
+html[data-theme="dark"] .text-slate-700,
+html[data-theme="dark"] .text-slate-600 {
+    color: var(--ctp-subtext0) !important;
+}
+
+html[data-theme="dark"] .text-slate-500,
+html[data-theme="dark"] .text-slate-400 {
+    color: rgba(166, 173, 200, 0.8) !important;
+}
+
+html[data-theme="dark"] .text-slate-300 {
+    color: rgba(166, 173, 200, 0.6) !important;
+}
+
+html[data-theme="dark"] .border-slate-100 {
+    border-color: rgba(49, 50, 68, 0.6) !important;
+}
+
+html[data-theme="dark"] .border-slate-200 {
+    border-color: rgba(49, 50, 68, 0.8) !important;
+}
+
+html[data-theme="dark"] .border-white {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="dark"] .border-white\/50 {
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+html[data-theme="dark"] .glass-panel {
+    background: rgba(24, 24, 37, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* --- Micro-Interactions & Animations --- */

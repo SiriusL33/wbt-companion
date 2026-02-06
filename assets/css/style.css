@@ -56,77 +56,88 @@ html[data-theme="dark"] ::selection {
     color: #0b0b12;
 }
 
+/* --- THEME OVERRIDES (Ohne !important für bessere Hover-Kontrolle) --- */
+
 html[data-theme="dark"] .bg-white {
-    background-color: var(--ctp-mantle) !important;
+    background-color: var(--ctp-mantle);
 }
 
 html[data-theme="dark"] .bg-white\/90 {
-    background-color: rgba(24, 24, 37, 0.9) !important;
+    background-color: rgba(24, 24, 37, 0.9);
 }
 
 html[data-theme="dark"] .bg-white\/50 {
-    background-color: rgba(24, 24, 37, 0.6) !important;
+    background-color: rgba(24, 24, 37, 0.6);
 }
 
 html[data-theme="dark"] .bg-slate-50 {
-    background-color: var(--ctp-base) !important;
+    background-color: var(--ctp-base);
 }
 
 html[data-theme="dark"] .bg-slate-100 {
-    background-color: var(--ctp-mantle) !important;
+    background-color: var(--ctp-mantle);
 }
 
 html[data-theme="dark"] .bg-slate-200 {
-    background-color: var(--ctp-surface0) !important;
+    background-color: var(--ctp-surface0);
 }
 
 html[data-theme="dark"] .bg-slate-900 {
-    background-color: #11111b !important;
+    background-color: #11111b;
 }
 
 html[data-theme="dark"] .text-slate-900,
 html[data-theme="dark"] .text-slate-800 {
-    color: var(--ctp-text) !important;
+    color: var(--ctp-text);
 }
 
 html[data-theme="dark"] .text-slate-700,
 html[data-theme="dark"] .text-slate-600 {
-    color: var(--ctp-subtext0) !important;
+    color: var(--ctp-subtext0);
 }
 
 html[data-theme="dark"] .text-slate-500,
 html[data-theme="dark"] .text-slate-400 {
-    color: rgba(166, 173, 200, 0.8) !important;
+    color: rgba(166, 173, 200, 0.8);
 }
 
 html[data-theme="dark"] .text-slate-300 {
-    color: rgba(166, 173, 200, 0.6) !important;
+    color: rgba(166, 173, 200, 0.6);
 }
 
 html[data-theme="dark"] .border-slate-100 {
-    border-color: rgba(49, 50, 68, 0.6) !important;
+    border-color: rgba(49, 50, 68, 0.6);
 }
 
 html[data-theme="dark"] .border-slate-200 {
-    border-color: rgba(49, 50, 68, 0.8) !important;
+    border-color: rgba(49, 50, 68, 0.8);
 }
 
 html[data-theme="dark"] .border-white {
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 html[data-theme="dark"] .border-white\/50 {
-    border-color: rgba(255, 255, 255, 0.16) !important;
+    border-color: rgba(255, 255, 255, 0.16);
 }
 
-html[data-theme="dark"] .glass-panel {
-    background: rgba(24, 24, 37, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+/* Special Class for Forced Light Mode Elements (Navbar/Footer) */
+.force-light {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+.force-light .text-slate-800, 
+.force-light .text-slate-700,
+.force-light .text-slate-600 {
+    color: #1e293b !important;
+}
+.force-light .text-slate-500 {
+    color: #64748b !important;
 }
 
 /* --- Micro-Interactions & Animations --- */
 
-/* 1. The "Living Button" Effect */
 .btn-interactive {
     transition: all 0.3s var(--ease-bounce);
     position: relative;
@@ -136,7 +147,7 @@ html[data-theme="dark"] .glass-panel {
 
 .btn-interactive:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 10px 25px -5px rgba(30, 102, 245, 0.4); /* Blue Glow shadow */
+    box-shadow: 0 10px 25px -5px rgba(30, 102, 245, 0.4); 
 }
 
 .btn-interactive:active {
@@ -144,29 +155,7 @@ html[data-theme="dark"] .glass-panel {
     box-shadow: 0 5px 15px -3px rgba(30, 102, 245, 0.3);
 }
 
-/* 2. Card Hover Lift */
-.card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
-}
-
-/* 3. Floating Icons (Sidebar/Tools) */
-.icon-btn {
-    transition: all 0.2s ease;
-}
-.icon-btn:hover {
-    transform: scale(1.15) rotate(5deg);
-    color: var(--ctp-pink);
-    background-color: rgba(234, 118, 203, 0.1); /* Soft Pink bg */
-}
-
 /* --- Page Transitions --- */
-
-/* Fade In (für Soft Load) */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -176,15 +165,6 @@ html[data-theme="dark"] .glass-panel {
     animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Delay helpers for staggering items */
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
-
-/* --- Utility / Helper --- */
-.glass-panel {
-    background: rgba(239, 241, 245, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.5);
-}

@@ -94,7 +94,7 @@ function injectFooter() {
                 <span class="font-bold text-slate-700 dark:text-slate-300">WBT Companion</span>
             </div>
             <p class="text-slate-400 text-sm mb-6 max-w-md mx-auto">Ein interaktiver Prototyp zur Demonstration moderner E-Learning Konzepte.</p>
-            <div class="mt-8 pt-8 border-t border-slate-200/60 opacity-40 dark:border-slate-700"><span class="text-xs font-mono">&copy; 2026 Medical Design Lab</span></div>
+            <div class="mt-8 pt-8 border-t border-slate-200/60 opacity-40 dark:border-slate-700"><span class="text-xs font-mono">&copy; 2026 CMLabs Dev</span></div>
         </div>
     </footer>`;
     const footerContainer = document.getElementById('app-footer');

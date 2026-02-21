@@ -3,6 +3,7 @@
  */
 
 let isLoginMode = true; // Wir starten immer im Login-Modus
+let csrfToken = null;
 
 const formTitle = document.getElementById('form-title');
 const submitBtn = document.getElementById('submit-btn');
@@ -42,9 +43,14 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
     const apiUrl = isLoginMode ? '/api/login' : '/api/register';
 
     try {
+        csrfToken = csrfToken || await getCsrfToken();
+
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-csrf-token': csrfToken
+            },
             body: JSON.stringify({ username: usernameInput, password: passwordInput })
         });
 
@@ -73,3 +79,13 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
         submitBtn.classList.remove('opacity-70', 'cursor-wait');
     }
 });
+
+async function getCsrfToken() {
+    const response = await fetch('/api/csrf-token', { method: 'GET' });
+    if (!response.ok) {
+        throw new Error('CSRF-Token konnte nicht geladen werden.');
+    }
+
+    const data = await response.json();
+    return data.csrfToken;
+}

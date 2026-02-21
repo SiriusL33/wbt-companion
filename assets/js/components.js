@@ -20,7 +20,6 @@ function injectHeader() {
     const basePath = getBasePath();
     const currentPath = window.location.pathname;
     
-    // Active State Logic
     const isHome = currentPath.endsWith('index.html') || currentPath.endsWith('/') || (!currentPath.includes('pages/'));
     const isExplore = currentPath.includes('explore.html') || currentPath.includes('detail.html');
     const isTopics = currentPath.includes('topics.html');
@@ -52,7 +51,6 @@ function injectHeader() {
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-100 rounded-lg md:flex-row md:items-center md:space-x-8 md:mt-0 md:border-0 dark:border-slate-700">
                     <li><a href="${basePath}index.html" class="block py-2 px-3 rounded md:p-0 ${isHome ? activeClass : inactiveClass}">Startseite</a></li>
                     <li><a href="${basePath}pages/explore.html" class="block py-2 px-3 rounded md:p-0 ${isExplore ? activeClass : inactiveClass}">Themenwelt</a></li>
-                    
                     <li><a href="${basePath}pages/topics.html" class="block py-2 px-3 rounded md:p-0 ${isTopics ? activeClass : inactiveClass}">Schwerpunkte</a></li>
                     <li><a href="${basePath}pages/about.html" class="block py-2 px-3 rounded md:p-0 ${isAbout ? activeClass : inactiveClass}">Über</a></li>
 
@@ -69,13 +67,8 @@ function injectHeader() {
 
                     <li class="hidden md:block h-6 w-px bg-slate-200 mx-2 dark:bg-slate-700"></li>
                     
-                    <li class="hidden md:flex items-center gap-3 pl-2 cursor-pointer group/profile" onclick="resetUser()" title="Namen ändern">
-                        <div class="text-right hidden lg:block">
-                            <div id="user-name-display" class="text-sm font-bold text-slate-700 dark:text-slate-200">Besucher</div>
-                            <div class="text-[10px] text-slate-400">Mein Bereich</div>
-                        </div>
-                        <img id="user-avatar-display" src="https://ui-avatars.com/api/?name=Guest&background=e2e8f0&color=64748b" class="w-10 h-10 rounded-full border-2 border-white shadow-sm group-hover/profile:scale-105 transition-transform" alt="Profil">
-                    </li>
+                    <li id="auth-menu-container" class="mt-4 md:mt-0 pt-4 md:pt-0 border-t border-slate-100 md:border-0 dark:border-slate-700 w-full md:w-auto flex justify-center md:justify-end">
+                        </li>
                 </ul>
             </div>
         </div>
@@ -139,21 +132,87 @@ function initThemeToggle() {
 /* --- LOGIK: USER & ZEIT --- */
 async function initUserSystem() {
     try {
-        // Wir fragen unseren neuen API-Endpunkt, wer eingeloggt ist
         const response = await fetch('/api/me');
         const data = await response.json();
 
         if (data.loggedIn) {
-            // Server bestätigt Login: Wir updaten das UI mit dem echten Namen!
             updateUserUI(data.username);
         } else {
-            // Niemand eingeloggt? Nur zur Sicherheit werfen wir den User zum Login.
-            if (!window.location.pathname.includes('login.html')) {
-                window.location.replace('/login.html');
-            }
+            renderGuestUI(); // KEIN Redirect mehr! Gäste bleiben Gäste.
         }
     } catch (error) {
         console.error("Fehler bei der Session-Prüfung", error);
+        renderGuestUI();
+    }
+}
+
+function getTimeBasedGreeting() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 11) return "Guten Morgen";
+    if (h >= 11 && h < 18) return "Guten Tag";
+    if (h >= 18 && h < 22) return "Guten Abend";
+    return "Hallo"; 
+}
+
+function renderGuestUI() {
+    const authContainer = document.getElementById('auth-menu-container');
+    if (authContainer) {
+        // Zeigt einen schicken "Anmelden"-Button für Gäste
+        authContainer.innerHTML = `
+            <a href="${getBasePath()}login.html" class="flex items-center justify-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl font-bold transition-all dark:bg-slate-800 dark:text-blue-400 dark:hover:bg-blue-600 dark:hover:text-white w-full md:w-auto">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                Anmelden
+            </a>
+        `;
+    }
+    
+    const greetingHeadline = document.getElementById('dynamic-greeting');
+    if (greetingHeadline) {
+        const timeGreeting = getTimeBasedGreeting();
+        greetingHeadline.innerHTML = `${timeGreeting}, <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Besucher.</span>`;
+    }
+}
+
+function updateUserUI(name) {
+    const authContainer = document.getElementById('auth-menu-container');
+    if (authContainer) {
+        const safeName = encodeURIComponent(name);
+        const avatarUrl = `https://ui-avatars.com/api/?name=${safeName}&background=3b82f6&color=fff&bold=true`;
+        
+        // Zeigt das Profil und einen sauberen Logout-Button (auch auf dem Handy super nutzbar)
+        authContainer.innerHTML = `
+            <div class="flex items-center justify-between md:justify-start gap-4 w-full px-2 md:px-0">
+                <div class="flex items-center gap-3 cursor-pointer group/profile" title="Zum Profil">
+                    <img src="${avatarUrl}" class="w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-700 shadow-sm group-hover/profile:scale-105 transition-transform" alt="Profil">
+                    <div class="text-left">
+                        <div class="text-sm font-bold text-slate-700 dark:text-slate-200">${name}</div>
+                        <div class="text-[10px] text-slate-400">Mein Bereich</div>
+                    </div>
+                </div>
+                
+                <button onclick="resetUser()" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors dark:hover:bg-red-900/30" title="Sicher abmelden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                </button>
+            </div>
+        `;
+    }
+
+    const greetingHeadline = document.getElementById('dynamic-greeting');
+    if (greetingHeadline) {
+        const timeGreeting = getTimeBasedGreeting();
+        greetingHeadline.innerHTML = `${timeGreeting}, <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">${name}.</span>`;
+    }
+}
+
+// Der neue, lautlose und echte Logout!
+async function resetUser() {
+    try {
+        await fetch('/api/logout', { method: 'POST' });
+        // Wirft den Nutzer nach dem serverseitigen Logout direkt auf die Startseite
+        window.location.replace('/index.html');
+    } catch(e) {
+        console.error("Logout Fehler", e);
+        window.location.replace('/index.html');
     }
 }
 

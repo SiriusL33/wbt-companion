@@ -110,10 +110,24 @@ app.post('/api/login', (req, res) => {
 });
 
 // ==========================================
-// 📦 ROUTE: WBT-Daten (JETZT GESCHÜTZT!)
+// 🚪 ROUTE: Logout (Echtes Abmelden)
 // ==========================================
-// Beachte das "checkAuth" in der Mitte. Ohne Session kommt hier niemand mehr durch.
-app.get('/api/wbts', checkAuth, (req, res) => {
+app.post('/api/logout', (req, res) => {
+    // 1. Zerstört die Session im Arbeitsspeicher des Servers
+    req.session.destroy((err) => {
+        if (err) return res.status(500).json({ error: 'Fehler beim Abmelden' });
+        // 2. Löscht das httpOnly-Cookie aktiv aus dem Browser des Nutzers
+        res.clearCookie('connect.sid'); 
+        res.json({ success: true });
+    });
+});
+
+// ==========================================
+// 🌐 ROUTEN & SEITEN-FREIGABE (Barrierefrei!)
+// ==========================================
+
+// 1. Die WBT-API ist jetzt OFFEN für Gäste (kein checkAuth mehr)
+app.get('/api/wbts', (req, res) => {
     db.all('SELECT * FROM wbts', [], (err, rows) => {
         if (err) return res.status(500).json({ error: 'Datenbankfehler' });
         
@@ -126,16 +140,20 @@ app.get('/api/wbts', checkAuth, (req, res) => {
     });
 });
 
-// ==========================================
-// 🌐 STATISCHE DATEIEN
-// ==========================================
-app.use(express.static(__dirname));
+// 2. Statische Dateien & Pages offen für ALLE (Die Mauer ist weg!)
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/pages', express.static(path.join(__dirname, 'pages')));
+
+// 3. Wichtige Einzelseiten
+app.get('/login.html', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
 
 app.get('/', (req, res) => {
+    // Kein sturer Redirect mehr zum Login! Alle dürfen auf die Startseite.
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Server starten
 app.listen(PORT, () => {
-    console.log(`\n🔒 Klartext Medizin (Secure Edition) läuft!`);
+    console.log(`\n🔓 Klartext Medizin (Open Access Edition) läuft!`);
     console.log(`👉 Klicke hier (Strg+Klick): http://localhost:${PORT}\n`);
 });

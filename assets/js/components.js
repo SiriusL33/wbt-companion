@@ -245,7 +245,31 @@ function updateUserUI(name) {
 
 // Den alten LocalStorage-Reset verwandeln wir in einen echten Logout!
 async function resetUser() {
-    if(confirm("Möchtest du dich sicher abmelden?")) {
-        window.location.replace('/login.html');
+    if (!confirm("Möchtest du dich sicher abmelden?")) {
+        return;
     }
+
+    try {
+        const csrfToken = await getCsrfToken();
+        await fetch('/api/logout', {
+            method: 'POST',
+            headers: {
+                'x-csrf-token': csrfToken
+            }
+        });
+        window.location.replace('/index.html');
+    } catch (e) {
+        console.error("Logout Fehler", e);
+        window.location.replace('/index.html');
+    }
+}
+
+async function getCsrfToken() {
+    const response = await fetch('/api/csrf-token', { method: 'GET' });
+    if (!response.ok) {
+        throw new Error('CSRF-Token konnte nicht geladen werden.');
+    }
+
+    const data = await response.json();
+    return data.csrfToken;
 }

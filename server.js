@@ -45,6 +45,42 @@ const checkAuth = (req, res, next) => {
 // ==========================================
 // 🔑 ROUTE: Der Login-Endpunkt
 // ==========================================
+// ==========================================
+// 📝 ROUTE: Registrierung (Neu)
+// ==========================================
+app.post('/api/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    // 1. Validierung
+    if (!username || !password || password.length < 6) {
+        return res.status(400).json({ error: 'Benutzername & Passwort (min. 6 Zeichen) erforderlich.' });
+    }
+
+    try {
+        // 2. Prüfen, ob der Name schon existiert
+        db.get('SELECT id FROM users WHERE username = ?', [username], async (err, row) => {
+            if (err) return res.status(500).json({ error: 'Datenbankfehler' });
+            if (row) return res.status(400).json({ error: 'Dieser Benutzername ist bereits vergeben.' });
+
+            // 3. Argon2 Hashing
+            const hash = await argon2.hash(password);
+
+            // 4. Nutzer in die Datenbank schreiben
+            db.run('INSERT INTO users (username, password_hash) VALUES (?, ?)', [username, hash], function(err) {
+                if (err) return res.status(500).json({ error: 'Fehler beim Anlegen des Benutzers.' });
+                
+                // 5. Seamless UX: Direkt einloggen nach Registrierung!
+                req.session.userId = this.lastID; // this.lastID ist die neue ID des Users
+                req.session.username = username;
+                res.json({ success: true, message: 'Registrierung erfolgreich!' });
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Kryptographie-Fehler bei Registrierung' });
+    }
+});
+
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 

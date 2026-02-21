@@ -1,0 +1,21 @@
+{
+  "name": "wbt-companion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SiriusL33/wbt-companion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SiriusL33/wbt-companion/issues"
+  },
+  "homepage": "https://github.com/SiriusL33/wbt-companion#readme"
+}

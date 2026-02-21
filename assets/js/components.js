@@ -136,14 +136,24 @@ function initThemeToggle() {
 }
 
 /* --- LOGIK: USER & ZEIT --- */
-function initUserSystem() {
-    const storedName = localStorage.getItem('wbt_username');
-    if (storedName) {
-        updateUserUI(storedName);
-    } else {
-        if(window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-            showWelcomeModal();
+/* --- LOGIK: USER & ZEIT --- */
+async function initUserSystem() {
+    try {
+        // Wir fragen unseren neuen API-Endpunkt, wer eingeloggt ist
+        const response = await fetch('/api/me');
+        const data = await response.json();
+
+        if (data.loggedIn) {
+            // Server bestätigt Login: Wir updaten das UI mit dem echten Namen!
+            updateUserUI(data.username);
+        } else {
+            // Niemand eingeloggt? Nur zur Sicherheit werfen wir den User zum Login.
+            if (!window.location.pathname.includes('login.html')) {
+                window.location.replace('/login.html');
+            }
         }
+    } catch (error) {
+        console.error("Fehler bei der Session-Prüfung", error);
     }
 }
 
@@ -156,60 +166,27 @@ function getTimeBasedGreeting() {
 }
 
 function updateUserUI(name) {
+    // 1. Namen im Header aktualisieren
     const nameEl = document.getElementById('user-name-display');
     const avatarEl = document.getElementById('user-avatar-display');
-    if(nameEl) nameEl.textContent = name;
-    if(avatarEl) {
+    
+    if (nameEl) nameEl.textContent = name;
+    if (avatarEl) {
         const safeName = encodeURIComponent(name);
         avatarEl.src = `https://ui-avatars.com/api/?name=${safeName}&background=3b82f6&color=fff&bold=true`;
     }
 
+    // 2. Begrüßung auf der Startseite anpassen (falls vorhanden)
     const greetingHeadline = document.getElementById('dynamic-greeting');
-    if(greetingHeadline) {
+    if (greetingHeadline) {
         const timeGreeting = getTimeBasedGreeting();
         greetingHeadline.innerHTML = `${timeGreeting}, <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">${name}.</span>`;
     }
 }
 
-function showWelcomeModal() {
-    if(document.getElementById('welcome-modal')) return;
-    const modalHTML = `
-    <div id="welcome-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 transform scale-90 transition-transform duration-300">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">👋</div>
-                <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Willkommen!</h2>
-                <p class="text-slate-500 dark:text-slate-400 mt-2">Wie dürfen wir dich ansprechen?</p>
-            </div>
-            <input type="text" id="input-name" placeholder="Dein Vorname" class="w-full bg-slate-50 dark:bg-slate-700 dark:text-white dark:border-slate-600 border border-slate-200 rounded-xl px-4 py-3 text-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all mb-4 text-center font-bold text-slate-700" maxlength="20">
-            <button onclick="saveUser()" class="w-full bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-slate-200 dark:shadow-none">Loslegen ➜</button>
-        </div>
-    </div>`;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    setTimeout(() => {
-        const modal = document.getElementById('welcome-modal');
-        const content = modal.querySelector('div');
-        modal.classList.remove('opacity-0');
-        content.classList.remove('scale-100');
-        document.getElementById('input-name').focus();
-        document.getElementById('input-name').addEventListener('keypress', (e) => { if (e.key === 'Enter') saveUser(); });
-    }, 50);
-}
-
-function saveUser() {
-    const input = document.getElementById('input-name');
-    let name = input.value.trim();
-    if (!name) name = "Besucher";
-    localStorage.setItem('wbt_username', name);
-    const modal = document.getElementById('welcome-modal');
-    modal.classList.add('opacity-0');
-    setTimeout(() => modal.remove(), 300);
-    updateUserUI(name);
-}
-
-function resetUser() {
-    if(confirm("Namen zurücksetzen?")) {
-        localStorage.removeItem('wbt_username');
-        location.reload();
+// Den alten LocalStorage-Reset verwandeln wir in einen echten Logout!
+async function resetUser() {
+    if(confirm("Möchtest du dich sicher abmelden?")) {
+        window.location.replace('/login.html');
     }
 }

@@ -100,7 +100,7 @@ async function generateFullCatalog() {
             await renderWBTPage(doc, wbt, width, height);
         }
 
-        doc.save('WBT_Explorer_Katalog_2026.pdf');
+        doc.save('Klartext-Medizin_Katalog_2026.pdf');
         
     } catch (err) {
         console.error(err);
@@ -184,8 +184,8 @@ async function renderWBTPage(doc, wbt, w, h) {
     doc.setFontSize(10);
     doc.setTextColor(100, 116, 139);
     doc.text("DAUER", infoX + 10, infoY + 68);
-    doc.text("FORMAT", infoX + 50, infoY + 68);
-    doc.text("XP WERT", infoX + 90, infoY + 68);
+    doc.text("MODULFORM", infoX + 50, infoY + 68);
+    doc.text("FORTSCHRITT", infoX + 90, infoY + 68);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
@@ -203,7 +203,7 @@ async function renderWBTPage(doc, wbt, w, h) {
     
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
-    doc.text("Scannen für Mobile View", w - 27.5, h - 12, { align: 'center' });
+    doc.text("Auf einem mobilen Endgerät weitermachen:", w - 27.5, h - 12, { align: 'center' });
     
     // Link Overlay über das ganze Bild
     if(wbt.link) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WBT Details | Loading...</title>
+    <title>Themenwelt | Loading...</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@
         
         <div class="relative group">
             <div id="qr-panel" class="absolute right-14 top-0 w-72 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 flex flex-col items-center gap-4 transition-all duration-300 transform scale-0 opacity-0 origin-top-right z-50">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Scan to Mobile</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">QR-Code anzeigen</span>
                 
                 <div id="qr-placeholder" class="w-56 h-56 bg-slate-50 rounded-xl flex items-center justify-center shadow-inner">
                     </div>
@@ -73,7 +73,7 @@
     </div>
 
     <main class="flex-grow pt-32 pb-20 container mx-auto px-4 max-w-6xl">
-        <div id="loading" class="text-center py-20 animate-pulse text-slate-400">Lade WBT Informationen...</div>
+        <div id="loading" class="text-center py-20 animate-pulse text-slate-400">Lade Informationen zum Trainingsmodul...</div>
 
         <div id="content" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-10 animate-fade-in">
             
@@ -98,7 +98,7 @@
 
             <div class="lg:col-span-5 flex flex-col gap-6 pt-4">
                 <div>
-                    <h4 class="text-theme font-bold uppercase tracking-widest text-sm mb-2">Web Based Training</h4>
+                    <h4 class="text-theme font-bold uppercase tracking-widest text-sm mb-2">Digitales Trainingsmodul</h4>
                     <h1 id="wbt-title" class="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight mb-3"></h1>
                     <p id="wbt-subtitle" class="text-xl text-slate-500 font-medium"></p>
                 </div>
@@ -108,9 +108,9 @@
                     <div class="relative z-10">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider">Deine Belohnung</p>
+                                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider">Dein aktuelles Modul</p>
                                 <div class="text-3xl font-bold mt-1 flex items-center gap-2">
-                                    +<span id="wbt-xp-display">0</span> XP
+                                    +<span id="wbt-xp-display">0</span> Fortschritt
                                     <span class="text-xs font-normal text-slate-500 ml-1">(nach Prüfung)</span>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                     <div class="flex items-center gap-4 z-10">
                         <div id="exam-icon" class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-lg transition-colors">?</div>
                         <div>
-                            <h4 class="font-bold text-slate-800 leading-tight">Wissensüberprüfung</h4>
+                            <h4 class="font-bold text-slate-800 leading-tight">Prüfung starten</h4>
                             <p id="exam-text" class="text-xs text-slate-500">Klicken zum Starten</p>
                         </div>
                     </div>

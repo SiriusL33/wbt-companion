@@ -38,8 +38,8 @@ function injectHeader() {
                     W
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-xl md:text-2xl font-bold text-slate-800 tracking-tight leading-none dark:text-slate-100">WBT <span class="text-blue-600 dark:text-blue-400">Companion</span></span>
-                    <span class="text-[10px] md:text-xs text-slate-400 uppercase tracking-widest font-semibold">Medical Explorer</span>
+                    <span class="text-xl md:text-2xl font-bold text-slate-800 tracking-tight leading-none dark:text-slate-100">KLARTEXT <span class="text-blue-600 dark:text-blue-400">MEDIZIN</span></span>
+                    <span class="text-[10px] md:text-xs text-slate-400 uppercase tracking-widest font-semibold">Digitalmedizin <br> leicht gemacht</span>
                 </div>
             </a>
             
@@ -51,10 +51,10 @@ function injectHeader() {
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-100 rounded-lg md:flex-row md:items-center md:space-x-8 md:mt-0 md:border-0 dark:border-slate-700">
                     <li><a href="${basePath}index.html" class="block py-2 px-3 rounded md:p-0 ${isHome ? activeClass : inactiveClass}">Startseite</a></li>
-                    <li><a href="${basePath}pages/explore.html" class="block py-2 px-3 rounded md:p-0 ${isExplore ? activeClass : inactiveClass}">Explore</a></li>
+                    <li><a href="${basePath}pages/explore.html" class="block py-2 px-3 rounded md:p-0 ${isExplore ? activeClass : inactiveClass}">Themenwelt</a></li>
                     
-                    <li><a href="${basePath}pages/topics.html" class="block py-2 px-3 rounded md:p-0 ${isTopics ? activeClass : inactiveClass}">Themen</a></li>
-                    <li><a href="${basePath}pages/about.html" class="block py-2 px-3 rounded md:p-0 ${isAbout ? activeClass : inactiveClass}">About</a></li>
+                    <li><a href="${basePath}pages/topics.html" class="block py-2 px-3 rounded md:p-0 ${isTopics ? activeClass : inactiveClass}">Schwerpunkte</a></li>
+                    <li><a href="${basePath}pages/about.html" class="block py-2 px-3 rounded md:p-0 ${isAbout ? activeClass : inactiveClass}">Über</a></li>
 
                     <li class="flex items-center py-2 px-3 md:p-0">
                         <label class="theme-switch inline-flex items-center gap-2 cursor-pointer select-none">
@@ -72,7 +72,7 @@ function injectHeader() {
                     <li class="hidden md:flex items-center gap-3 pl-2 cursor-pointer group/profile" onclick="resetUser()" title="Namen ändern">
                         <div class="text-right hidden lg:block">
                             <div id="user-name-display" class="text-sm font-bold text-slate-700 dark:text-slate-200">Besucher</div>
-                            <div class="text-[10px] text-slate-400">Medical Explorer</div>
+                            <div class="text-[10px] text-slate-400">Dein Bereich</div>
                         </div>
                         <img id="user-avatar-display" src="https://ui-avatars.com/api/?name=Guest&background=e2e8f0&color=64748b" class="w-10 h-10 rounded-full border-2 border-white shadow-sm group-hover/profile:scale-105 transition-transform" alt="Profil">
                     </li>

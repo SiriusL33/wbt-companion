@@ -57,7 +57,7 @@ function renderHeroSection(items) {
             
             <div class="flex justify-between items-center z-10 mb-4">
                 <span class="bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-slate-800 border border-slate-100">
-                    ${isBig ? 'Empfehlung der Woche' : 'Neu'}
+                    ${isBig ? 'Diesen Monat im Fokus' : 'Neu'}
                 </span>
                 <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform" style="color: ${color}">
                     ➜

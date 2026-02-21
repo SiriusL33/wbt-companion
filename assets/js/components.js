@@ -72,7 +72,7 @@ function injectHeader() {
                     <li class="hidden md:flex items-center gap-3 pl-2 cursor-pointer group/profile" onclick="resetUser()" title="Namen ändern">
                         <div class="text-right hidden lg:block">
                             <div id="user-name-display" class="text-sm font-bold text-slate-700 dark:text-slate-200">Besucher</div>
-                            <div class="text-[10px] text-slate-400">Dein Bereich</div>
+                            <div class="text-[10px] text-slate-400">Mein Bereich</div>
                         </div>
                         <img id="user-avatar-display" src="https://ui-avatars.com/api/?name=Guest&background=e2e8f0&color=64748b" class="w-10 h-10 rounded-full border-2 border-white shadow-sm group-hover/profile:scale-105 transition-transform" alt="Profil">
                     </li>

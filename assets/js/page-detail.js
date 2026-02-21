@@ -273,13 +273,13 @@ async function generatePDF() {
         // QR
         if(qrImgData) {
             doc.addImage(qrImgData, 'PNG', width - 50, height - 50, 30, 30);
-            doc.setFontSize(8); doc.text("Scan for Mobile", width - 48, height - 18);
+            doc.setFontSize(8); doc.text("Auf Mobilgerät öffnen", width - 48, height - 18);
         } else {
             doc.setDrawColor(200); doc.rect(width - 50, height - 50, 30, 30);
-            doc.text("QR n/a", width - 45, height - 35);
+            doc.text("QR-Code<br>Nicht Verfügbar", width - 45, height - 35);
         }
 
-        doc.save(`WBT_Slide_${currentWBT.id}.pdf`);
+        doc.save(`Klartext-Medizin_Offlineansicht_${currentWBT.id}.pdf`);
     } catch (err) {
         console.error("PDF Fehler:", err);
         alert("Fehler beim PDF Erstellen.");

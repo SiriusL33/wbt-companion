@@ -45,16 +45,16 @@ async function generateFullCatalog() {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(60);
         doc.setTextColor(255, 255, 255);
-        doc.text("WBT", width / 2, 80, { align: 'center' });
+        doc.text("KLARTEXT MEDIZIN", width / 2, 80, { align: 'center' });
         doc.setTextColor(217, 119, 6); // Amber
-        doc.text("CATALOG", width / 2, 105, { align: 'center' });
+        doc.text("KATALOG", width / 2, 105, { align: 'center' });
         
         doc.setFontSize(20);
         doc.setTextColor(148, 163, 184); // Slate-400
-        doc.text("EDITION 2026", width / 2, 125, { align: 'center' });
+        doc.text("AUSGABE 2026", width / 2, 125, { align: 'center' });
 
         doc.setFontSize(12);
-        doc.text("Medical Design Lab", width / 2, height - 30, { align: 'center' });
+        doc.text("Digitaler Lernbegleiter", width / 2, height - 30, { align: 'center' });
 
 
         // --- SEITE 2: INHALTSVERZEICHNIS (TOC) ---

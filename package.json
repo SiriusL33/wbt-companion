@@ -17,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/SiriusL33/wbt-companion/issues"
   },
-  "homepage": "https://github.com/SiriusL33/wbt-companion#readme"
+  "homepage": "https://github.com/SiriusL33/wbt-companion#readme",
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }

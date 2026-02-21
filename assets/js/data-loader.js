@@ -5,15 +5,14 @@
 const WBTApp = {
     data: [],
 
-    async loadData() {
+   async loadData() {
         if (this.data.length > 0) return; 
 
         try {
-            // Pfad-Check
-            const isPages = window.location.pathname.includes('/pages/');
-            const jsonPath = isPages ? '../data/wbts.json' : 'data/wbts.json';
-
-            const response = await fetch(jsonPath);
+            // NEU: Wir fragen jetzt einfach unsere eigene API! 
+            // Egal wo wir sind (Startseite oder Unterseite), der Server antwortet immer unter /api/wbts
+            const response = await fetch('/api/wbts');
+            
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             this.data = await response.json();

@@ -2,7 +2,8 @@
  * Klartext Medizin - Backend Server (Enterprise Security Edition)
  */
 
-const express = require('express');
+const http = require('http');
+const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
